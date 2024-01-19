@@ -1,0 +1,70 @@
+/* -------------------------------------------------
+    Dateselector nav
+   ------------------------------------------------- */
+
+.air-dateselector-nav {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ads-border-color-inner);
+  min-height: var(--ads-nav-height);
+  padding: var(--ads-padding);
+  box-sizing: content-box;
+}
+.air-dateselector-nav--title,
+.air-dateselector-nav--action {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/*  Navigation action
+   ------------------------------------------------- */
+
+.air-dateselector-nav--action {
+  width: var(--ads-nav-action-size);
+  border-radius: var(--ads-border-radius);
+  user-select: none;
+
+  &:active {
+    background: var(--ads-background-color-active);
+  }
+
+  &.-disabled- {
+    visibility: hidden;
+  }
+
+  svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  path {
+    fill: none;
+    stroke: var(--ads-nav-arrow-color);
+    stroke-width: 2px;
+  }
+}
+
+/*  Navigation title
+   ------------------------------------------------- */
+
+.air-dateselector-nav--title {
+  border-radius: var(--ads-border-radius);
+  padding: 0 8px;
+
+  i {
+    font-style: normal;
+    color: var(--ads-nav-color-secondary);
+    margin-left: 0.3em;
+  }
+
+  &:active {
+    background: var(--ads-background-color-active);
+  }
+
+  &.-disabled- {
+    cursor: default;
+    background: none;
+  }
+}

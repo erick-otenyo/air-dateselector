@@ -1,0 +1,67 @@
+@import "./_objects";
+
+/* -------------------------------------------------
+    Dateselector cell
+   ------------------------------------------------- */
+
+.air-dateselector-cell {
+  border-radius: var(--ads-cell-border-radius);
+  box-sizing: border-box;
+  cursor: pointer;
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: center;
+  z-index: 1; // ?
+
+  &.-focus- {
+    background: var(--ads-cell-background-color-hover);
+  }
+
+  &.-current- {
+    color: var(--ads-color-current-date);
+
+    &.-focus- {
+      color: var(--ads-color);
+    }
+  }
+
+  &.-disabled- {
+    cursor: default;
+    color: var(--ads-color-disabled);
+
+    &.-focus- {
+      color: var(--ads-color-disabled);
+    }
+
+    &.-current- {
+      &.-focus- {
+        color: var(--ads-color-disabled);
+      }
+    }
+  }
+
+  &.-selected- {
+    color: #fff;
+    border: none;
+    background: var(--ads-cell-background-color-selected);
+
+    &.-current- {
+      color: #fff;
+      background: var(--ads-cell-background-color-selected);
+    }
+
+    &.-focus- {
+      background: var(--ads-cell-background-color-selected-hover);
+    }
+  }
+}
+
+/*  Day cell
+   ------------------------------------------------- */
+
+.air-dateselector-cell.-day- {
+  &.-other-month- {
+    @extend %otherMonth;
+  }
+}

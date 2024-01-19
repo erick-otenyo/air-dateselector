@@ -1,0 +1,26 @@
+%otherMonth {
+  color: var(--ads-color-other-month);
+
+  &:hover {
+    color: var(--ads-color-other-month-hover);
+  }
+
+  &.-disabled- {
+    &.-focus- {
+      color: var(--ads-color-other-month);
+    }
+  }
+
+  &.-selected- {
+    color: #fff;
+    background: var(--ads-background-color-selected-other-month);
+    &.-focus- {
+      background: var(--ads-background-color-selected-other-month-focused);
+    }
+  }
+
+  &:empty {
+    background: none;
+    border: none;
+  }
+}
