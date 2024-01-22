@@ -1,5 +1,5 @@
 # Air Dateselector
 
-Lightweight, customizable dataselector.
+Lightweight, customizable dateselector.
 
 `NOTE` - **Under Development**
