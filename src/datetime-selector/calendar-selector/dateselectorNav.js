@@ -4,7 +4,7 @@ import {
   getEl,
   getParsedDate,
   removeClass,
-} from "./utils";
+} from "../utils";
 
 import "./dateselectorNav.scss";
 import consts from "./consts";

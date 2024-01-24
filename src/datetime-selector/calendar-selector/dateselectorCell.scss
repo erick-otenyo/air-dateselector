@@ -5,7 +5,7 @@
    ------------------------------------------------- */
 
 .air-dateselector-cell {
-  border-radius: var(--ads-cell-border-radius);
+  border-radius: var(--adts-cell-border-radius);
   box-sizing: border-box;
   cursor: pointer;
   display: flex;
@@ -15,28 +15,28 @@
   z-index: 1; // ?
 
   &.-focus- {
-    background: var(--ads-cell-background-color-hover);
+    background: var(--adts-cell-background-color-hover);
   }
 
   &.-current- {
-    color: var(--ads-color-current-date);
+    color: var(--adts-color-current-date);
 
     &.-focus- {
-      color: var(--ads-color);
+      color: var(--adts-color);
     }
   }
 
   &.-disabled- {
     cursor: default;
-    color: var(--ads-color-disabled);
+    color: var(--adts-color-disabled);
 
     &.-focus- {
-      color: var(--ads-color-disabled);
+      color: var(--adts-color-disabled);
     }
 
     &.-current- {
       &.-focus- {
-        color: var(--ads-color-disabled);
+        color: var(--adts-color-disabled);
       }
     }
   }
@@ -44,15 +44,15 @@
   &.-selected- {
     color: #fff;
     border: none;
-    background: var(--ads-cell-background-color-selected);
+    background: var(--adts-cell-background-color-selected);
 
     &.-current- {
       color: #fff;
-      background: var(--ads-cell-background-color-selected);
+      background: var(--adts-cell-background-color-selected);
     }
 
     &.-focus- {
-      background: var(--ads-cell-background-color-selected-hover);
+      background: var(--adts-cell-background-color-selected-hover);
     }
   }
 }

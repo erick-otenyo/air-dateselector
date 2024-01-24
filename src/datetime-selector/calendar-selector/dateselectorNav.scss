@@ -5,9 +5,9 @@
 .air-dateselector-nav {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid var(--ads-border-color-inner);
-  min-height: var(--ads-nav-height);
-  padding: var(--ads-padding);
+  border-bottom: 1px solid var(--adts-border-color-inner);
+  min-height: var(--adts-nav-height);
+  padding: var(--adts-padding);
   box-sizing: content-box;
 }
 .air-dateselector-nav--title,
@@ -22,12 +22,12 @@
    ------------------------------------------------- */
 
 .air-dateselector-nav--action {
-  width: var(--ads-nav-action-size);
-  border-radius: var(--ads-border-radius);
+  width: var(--adts-nav-action-size);
+  border-radius: var(--adts-border-radius);
   user-select: none;
 
   &:active {
-    background: var(--ads-background-color-active);
+    background: var(--adts-background-color-active);
   }
 
   &.-disabled- {
@@ -41,7 +41,7 @@
 
   path {
     fill: none;
-    stroke: var(--ads-nav-arrow-color);
+    stroke: var(--adts-nav-arrow-color);
     stroke-width: 2px;
   }
 }
@@ -50,17 +50,17 @@
    ------------------------------------------------- */
 
 .air-dateselector-nav--title {
-  border-radius: var(--ads-border-radius);
+  border-radius: var(--adts-border-radius);
   padding: 0 8px;
 
   i {
     font-style: normal;
-    color: var(--ads-nav-color-secondary);
+    color: var(--adts-nav-color-secondary);
     margin-left: 0.3em;
   }
 
   &:active {
-    background: var(--ads-background-color-active);
+    background: var(--adts-background-color-active);
   }
 
   &.-disabled- {

@@ -1,0 +1,80 @@
+/* -------------------------------------------------
+    DateTimeSelector nav
+   ------------------------------------------------- */
+
+.air-dts-nav {
+  display: flex;
+  justify-content: space-between;
+  background: var(--adts-nav-background-color);
+  height: var(--adts-nav-height);
+  box-sizing: content-box;
+  border-radius: 2px;
+}
+
+.air-dts-nav--title,
+.air-dts-nav--action {
+  display: flex;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+/*  Navigation action
+     ------------------------------------------------- */
+
+.air-dts-nav--action {
+  width: var(--adts-nav-action-size);
+  user-select: none;
+  background: var(--adts-background-color-active);
+
+  &:hover {
+    background: var(--adts-background-color-hover);
+  }
+
+  &:active {
+    background: var(--adts-background-color-active);
+  }
+
+  &.-disabled- {
+    visibility: hidden;
+  }
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  path {
+    fill: none;
+    stroke: var(--adts-nav-arrow-color);
+    stroke-width: 2px;
+  }
+}
+
+/*  Navigation title
+     ------------------------------------------------- */
+
+.air-dts-nav--title {
+  padding: 0;
+  border: none;
+  background: none;
+  width: 100%;
+  i {
+    font-style: normal;
+    color: var(--adts-nav-color-secondary);
+    margin-left: 0.3em;
+  }
+
+  &:hover {
+    background: var(--adts-background-color-hover);
+  }
+
+  &:active {
+    background: var(--adts-background-color-active);
+  }
+
+  &.-disabled- {
+    cursor: default;
+    background: none;
+  }
+}

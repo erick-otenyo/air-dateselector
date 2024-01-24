@@ -1,48 +1,9 @@
-import { getEl, classNames } from "./utils";
-import {
-  daysInMonth,
-  defined,
-  dFormatter,
-  formatDateTime,
-  monthNames,
-  objectifyDates,
-} from "./datetime-utils";
-
-import DateSelector from "./dateselector";
-
-export default class DateTimeselector {
-  constructor(el, opts) {
-    this.$el = getEl(el);
-
-    this.opts = opts;
-
-    this.includeDates = this.opts.includeDates || [];
-
-    this.state = {
-      century: null,
-      year: null,
-      month: null,
-      day: null,
-      time: null,
-      hour: null,
-      granularity: null,
-    };
-
-    this.centuryGridItems = [];
-    this.yearGridItems = [];
-
-    this.init();
-  }
-
-  init() {
-    this._objectifyDates();
-  }
-
+class Temp {
   _bindEvents() {
-    window.addEventListener("click", this.closePicker);
+    window.addEventListener("click", this.closeSelector);
   }
 
-  closePicker() {}
+  closeSelector() {}
 
   _setState(newState) {
     this.state = { ...this.state, ...newState };
@@ -479,8 +440,4 @@ export default class DateTimeselector {
       });
     }
   };
-
-  render() {
-    
-  }
 }

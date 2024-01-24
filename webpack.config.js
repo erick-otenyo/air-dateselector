@@ -32,7 +32,7 @@ module.exports = function (env, argv) {
   };
 
   if (!dev) {
-    entry.index = "./src/dateselector.js";
+    entry.index = "./src/datetime-selector/index.js";
   }
 
   const config = {
@@ -44,7 +44,7 @@ module.exports = function (env, argv) {
       filename: dev ? "js/[name].js" : `${NAME}.js`,
       publicPath: "/",
       chunkFilename: "js/[name].js",
-      library: dev ? undefined : "AirDateselector",
+      library: dev ? undefined : "AirDateTimeselector",
       libraryTarget: dev ? undefined : "umd",
       libraryExport: dev ? undefined : "default",
       globalObject: "this",

@@ -1,5 +1,5 @@
 import consts from "./consts";
-import { createElement, classNames, getParsedDate, isSameDate } from "./utils";
+import { createElement, classNames, getParsedDate, isSameDate } from "../../utils";
 
 import "./dateselectorCell.scss";
 

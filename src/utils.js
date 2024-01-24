@@ -3,7 +3,7 @@
  * @param {HTMLElement, String} el
  * @param {Document|HTMLElement} [context=document]
  */
-import consts from './consts';
+import consts from './datetime-selector/calendar-selector/consts';
 
 export function getEl(el, context = document) {
     return typeof el === 'string'

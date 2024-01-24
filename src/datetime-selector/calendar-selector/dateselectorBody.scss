@@ -3,7 +3,7 @@
    ------------------------------------------------- */
 
 .air-dateselector-body {
-  transition: all var(--ads-transition-duration) var(--ads-transition-ease);
+  transition: all var(--adts-transition-duration) var(--adts-transition-ease);
 
   &.-hidden- {
     display: none;
@@ -15,12 +15,12 @@
 
 .air-dateselector-body--day-names {
   display: grid;
-  grid-template-columns: repeat(7, var(--ads-day-cell-width));
+  grid-template-columns: repeat(7, var(--adts-day-cell-width));
   margin: 8px 0 3px;
 }
 
 .air-dateselector-body--day-name {
-  color: var(--ads-day-name-color);
+  color: var(--adts-day-name-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -33,7 +33,7 @@
     cursor: pointer;
 
     &:hover {
-      color: var(--ads-day-name-color-hover);
+      color: var(--adts-day-name-color-hover);
     }
   }
 }
@@ -44,7 +44,7 @@
 .air-dateselector-body--cells {
   display: grid;
   &.-days- {
-    grid-template-columns: repeat(7, var(--ads-day-cell-width));
-    grid-auto-rows: var(--ads-day-cell-height);
+    grid-template-columns: repeat(7, var(--adts-day-cell-width));
+    grid-auto-rows: var(--adts-day-cell-height);
   }
 }

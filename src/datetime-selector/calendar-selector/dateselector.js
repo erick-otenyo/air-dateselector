@@ -12,12 +12,12 @@ import {
   isDateBigger,
   isDateSmaller,
   isSameDate,
-} from "./utils";
+} from "../utils";
 
 import DateselectorBody from "./dateselectorBody";
 import DateselectorNav from "./dateselectorNav";
 import DateselectorKeyboard from "./dateselectorKeyboard";
-import withEvents from "./withEvents";
+import withEvents from "../withEvents";
 import consts from "./consts";
 
 import "./dateselectorVars.scss";

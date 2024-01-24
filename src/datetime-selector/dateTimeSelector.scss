@@ -1,0 +1,21 @@
+/* -------------------------------------------------
+    DateTimeselector
+   ------------------------------------------------- */
+
+.air-dts {
+  background: var(--adts-background-color);
+  font-family: var(--adts-font-family), sans-serif;
+  font-size: var(--adts-font-size);
+  color: var(--adts-color);
+  width: var(--adts-width);
+}
+
+.air-dts-global-container {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.air-dts--navigation {
+  grid-area: nav;
+}
