@@ -2,7 +2,7 @@
     Dateselector nav
    ------------------------------------------------- */
 
-.air-dateselector-nav {
+.air-cal-nav {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid var(--adts-border-color-inner);
@@ -10,8 +10,8 @@
   padding: var(--adts-padding);
   box-sizing: content-box;
 }
-.air-dateselector-nav--title,
-.air-dateselector-nav--action {
+.air-cal-nav--title,
+.air-cal-nav--action {
   display: flex;
   cursor: pointer;
   align-items: center;
@@ -21,7 +21,7 @@
 /*  Navigation action
    ------------------------------------------------- */
 
-.air-dateselector-nav--action {
+.air-cal-nav--action {
   width: var(--adts-nav-action-size);
   border-radius: var(--adts-border-radius);
   user-select: none;
@@ -49,7 +49,7 @@
 /*  Navigation title
    ------------------------------------------------- */
 
-.air-dateselector-nav--title {
+.air-cal-nav--title {
   border-radius: var(--adts-border-radius);
   padding: 0 8px;
 

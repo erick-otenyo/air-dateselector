@@ -1,9 +1,12 @@
-import consts from "./consts";
-import { createElement, classNames, getParsedDate, isSameDate } from "../../utils";
+import { createElement, classNames } from "dom-utils";
 
-import "./dateselectorCell.scss";
+import { getParsedDate, isSameDate } from "date-utils";
 
-export default class DateselectorCell {
+import consts from "consts";
+
+import "./style.scss";
+
+export default class CalendarCell {
   constructor({ date, ds, opts, body } = {}) {
     this.date = date;
     this.ds = ds;
@@ -72,7 +75,7 @@ export default class DateselectorCell {
     let { day } = getParsedDate(this.date);
     let disabled = this.customData?.disabled;
 
-    let classNameCommon = classNames("air-dateselector-cell", "-day-", {
+    let classNameCommon = classNames("air-cal-cell", "-day-", {
       "-current-": isSameDate(currentDate, this.date),
       "-min-date-": minDate && isSameDate(minDate, this.date),
       "-max-date-": maxDate && isSameDate(maxDate, this.date),

@@ -1,0 +1,234 @@
+.air-dts--content {
+  height: var(--adts-portal-height);
+
+  padding: 10px;
+
+  .dayPicker {
+    text-align: center;
+    margin-top: -10px;
+  }
+
+  .backbutton {
+    background-color: transparent;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 400;
+    box-shadow: none;
+    text-align: left;
+    cursor: pointer;
+    line-height: 20px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+      border-color: transparent;
+      outline: none;
+      opacity: 0.9;
+    }
+    display: inline-block;
+    z-index: 99;
+    position: relative;
+    &[disabled],
+    &:disabled {
+      opacity: 0.1;
+    }
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    path {
+      fill: none;
+      stroke: var(--adts-nav-arrow-color);
+      stroke-width: 2px;
+    }
+  }
+
+  .backbtn {
+    margin: 0 1px;
+    border: 0;
+    border-radius: 2px;
+    padding: 0 6px;
+    box-sizing: border-box;
+    font-weight: 400;
+    box-shadow: none;
+    text-align: left;
+    cursor: pointer;
+    line-height: 20px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+      border-color: transparent;
+      outline: none;
+      opacity: 0.9;
+    }
+    display: inline-block;
+    z-index: 99;
+    position: relative;
+    &[disabled],
+    &:disabled {
+      opacity: 0.1;
+    }
+
+    .c-icon {
+      height: 8px;
+      width: 8px;
+      margin-right: 4px;
+      text-align: center;
+    }
+  }
+
+  .grid {
+    display: block;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    color: #fff;
+    padding: 0px 5px;
+    border-radius: 3px;
+    margin-top: -20px;
+  }
+
+  .gridBody {
+    height: calc(100% - 30px);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+    &::-webkit-scrollbar {
+      width: 10px;
+      /* for vertical scrollbars */
+      height: 8px;
+      /* for horizontal scrollbars */
+    }
+    &::-webkit-scrollbar-track {
+      background: rgba(#888, 0.1);
+    }
+    &::-webkit-scrollbar-thumb {
+      background: rgba(#888, 0.6);
+    }
+  }
+
+  .gridRow {
+    display: flex;
+    align-items: center;
+  }
+
+  .gridRow:hover {
+    background: #e9e9e9;
+    cursor: pointer;
+  }
+
+  .inactiveGridRow:hover {
+    background: transparent;
+    cursor: default;
+  }
+
+  .gridLabel {
+    display: inline-block;
+    width: 35px;
+    font-size: 10px;
+    padding-left: 6px;
+    color: var(--adts-color);
+  }
+
+  .gridRowInner12,
+  .gridRowInner31 {
+    display: table-row;
+    padding: 3px;
+    border-radius: 3px;
+  }
+
+  .gridRowInner12 span,
+  .gridRowInner31 span {
+    display: inline-block;
+    height: 10px;
+    width: 2px;
+    background: rgba(199, 197, 197, 0.575);
+    margin-top: 1px;
+  }
+
+  .gridRowInner12 span {
+    margin-right: 11px;
+  }
+
+  .gridRowInner31 span {
+    margin-right: 3px;
+  }
+
+  .activeGrid {
+    opacity: 0.9;
+    background: var(--adts-primary-color) !important;
+  }
+
+  .gridHeading {
+    text-align: center;
+    color: var(--adts-color);
+    font-size: 12px;
+    padding-bottom: 6px;
+  }
+
+  .hourview {
+  }
+
+  .summary {
+    font-size: 10px;
+  }
+
+  .open {
+  }
+
+  .centuryBtn,
+  .dateBtn {
+    background-color: transparent;
+    margin: 0;
+    border: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-weight: 400;
+    box-shadow: none;
+    text-align: left;
+    cursor: pointer;
+    line-height: 10px;
+    text-decoration: none;
+    font-size: 0.85rem;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+      border-color: transparent;
+      outline: none;
+      opacity: 0.9;
+    }
+    display: block;
+    background: var(--adts-primary-color);
+    color: #fff;
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 2px;
+    padding: 10px;
+    &:disabled {
+      background: #595b60 !important;
+      cursor: not-allowed;
+      &:hover,
+      &--hover {
+        background: #595b60 !important;
+      }
+    }
+    &:hover,
+    &--hover {
+      background: var(--adts-primary-color);
+    }
+    width: calc(100% - 20px);
+    margin: 5px;
+  }
+
+  .centuryBtn {
+    display: inline-block;
+    width: 40%;
+  }
+}

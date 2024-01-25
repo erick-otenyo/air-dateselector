@@ -1,4 +1,6 @@
-import { getEl, createElement } from "utils";
+import { getEl, createElement } from "dom-utils";
+
+import DateTimeSelectorBody from "./datetime-selector-body";
 
 import "./style.scss";
 
@@ -89,6 +91,7 @@ export default class DateTimeSelectorPortal {
     this.visible = false;
 
     this.$portal.classList.remove("-active-");
+    this.$portal.innerHTML = "";
 
     this._destroyComponents();
     this.$container.removeChild(this.$portal);
@@ -101,6 +104,10 @@ export default class DateTimeSelectorPortal {
       classes = `-${main}-${sec}- -from-${main}-`;
 
     this.$portal.classList.add(...classes.split(" "));
+  }
+
+  _destroyComponents() {
+    this.body.destroy();
   }
 
   setPosition = () => {
@@ -190,25 +197,23 @@ export default class DateTimeSelectorPortal {
     }px`;
   };
 
-  _destroyComponents() {}
-
   get $container() {
     return $dtsPortalContainer;
   }
 
   _createComponents() {
+    let { opts, dts } = this;
+
     this._buildBaseHtml();
 
     this._setPositionClasses();
+
+    this.body = new DateTimeSelectorBody({ dts, opts });
+
+    this.$portal.appendChild(this.body.$el);
   }
 
   _buildBaseHtml() {
     this.$container.appendChild(this.$portal);
-
-    this.$portal.innerHTML =
-      "" + '<div class="air-dts--content">Hello World</div>';
-    this.$content = getEl(".air-dts--content", this.$portal);
   }
-
-  render() {}
 }

@@ -1,81 +1,117 @@
-class Temp {
-  _bindEvents() {
-    window.addEventListener("click", this.closeSelector);
+import { getEl, createElement, classNames } from "dom-utils";
+
+import {
+  dFormatter,
+  formatDateTime,
+  objectifyDates,
+  monthNames,
+  daysInMonth,
+} from "date-utils";
+
+import { defined } from "utils";
+
+import CalendarSelector from "./calendar-selector";
+
+import "./style.scss";
+
+export default class DateTimeSelectorBody {
+  constructor({ dts, opts }) {
+    this.dts = dts;
+    this.opts = opts;
+
+    this.$el = createElement({
+      className: "air-dts--content",
+    });
+
+    this.includeDates = this.opts.includeDates || [];
+    this.datesObject = objectifyDates(this.includeDates);
+
+    this.state = {
+      century: null,
+      year: null,
+      month: null,
+      day: null,
+      time: null,
+      hour: null,
+      granularity: null,
+    };
+
+    this.init();
   }
 
-  closeSelector() {}
-
-  _setState(newState) {
-    this.state = { ...this.state, ...newState };
+  init() {
+    this._initState();
   }
 
-  _objectifyDates() {
-    if (this.includeDates) {
-      this.datesObject = objectifyDates(this.includeDates);
+  _initState() {
+    let defaultCentury = null;
+    let defaultYear = null;
+    let defaultMonth = null;
+    let defaultDay = null;
+    let defaultTime = null;
+    let defaultGranularity = "century";
 
-      let defaultCentury = null;
-      let defaultYear = null;
-      let defaultMonth = null;
-      let defaultDay = null;
-      let defaultTime = null;
-      let defaultGranularity = "century";
+    const { datesObject } = this;
 
-      if (this.datesObject.indice.length === 1) {
-        // only one century
-        const soleCentury = this.datesObject.indice[0];
+    if (datesObject.indice.length === 1) {
+      // only one century
+      const soleCentury = datesObject.indice[0];
 
-        const dataFromThisCentury = this.datesObject[soleCentury];
-        defaultCentury = soleCentury;
+      const dataFromThisCentury = datesObject[soleCentury];
+      defaultCentury = soleCentury;
 
-        if (dataFromThisCentury.indice.length === 1) {
-          // only one year, check if this year has only one month
-          const soleYear = dataFromThisCentury.indice[0];
-          const dataFromThisYear = dataFromThisCentury[soleYear];
-          defaultYear = soleYear;
-          defaultGranularity = "year";
+      if (dataFromThisCentury.indice.length === 1) {
+        // only one year, check if this year has only one month
+        const soleYear = dataFromThisCentury.indice[0];
+        const dataFromThisYear = dataFromThisCentury[soleYear];
+        defaultYear = soleYear;
+        defaultGranularity = "year";
 
-          if (dataFromThisYear.indice.length === 1) {
-            // only one month data from this one year, need to check day then
-            const soleMonth = dataFromThisYear.indice[0];
-            const dataFromThisMonth = dataFromThisYear[soleMonth];
-            defaultMonth = soleMonth;
-            defaultGranularity = "month";
+        if (dataFromThisYear.indice.length === 1) {
+          // only one month data from this one year, need to check day then
+          const soleMonth = dataFromThisYear.indice[0];
+          const dataFromThisMonth = dataFromThisYear[soleMonth];
+          defaultMonth = soleMonth;
+          defaultGranularity = "month";
 
-            if (dataFromThisMonth.indice === 1) {
-              // only one day has data
-              defaultDay = dataFromThisMonth.indice[0];
-            }
+          if (dataFromThisMonth.indice === 1) {
+            // only one day has data
+            defaultDay = dataFromThisMonth.indice[0];
           }
         }
       }
-
-      this._setState({
-        century: defaultCentury,
-        year: defaultYear,
-        month: defaultMonth,
-        day: defaultDay,
-        time: defaultTime,
-        granularity: defaultGranularity,
-      });
     }
+
+    this._setState({
+      century: defaultCentury,
+      year: defaultYear,
+      month: defaultMonth,
+      day: defaultDay,
+      time: defaultTime,
+      granularity: defaultGranularity,
+    });
   }
 
-  _buildCenturyGrid() {
-    if (!this.datesObject) return;
+  _setState(newState) {
+    this.state = { ...this.state, ...newState };
 
-    if (this.datesObject.dates && this.datesObject.dates.length >= 12) {
-      const centuries = this.datesObject.indice;
+    this.render();
+  }
+
+  _buildCenturyGrid(datesObject) {
+    if (datesObject.dates && datesObject.dates.length >= 12) {
+      const centuries = datesObject.indice;
 
       const $centuryGrid = createElement({
         className: "grid",
-        innerHtml: "" + '<div class="gridHeading"> Select a century</div>',
+        innerHTML: "" + '<div class="gridHeading"> Select a century</div>',
       });
 
       centuries.forEach((c) => {
         const $item = createElement({
           tagName: "button",
           className: "centuryBtn",
-          innerHtml: `${c}00`,
+          innerHTML: `${c}00`,
         });
 
         $item.addEventListener("click", () => {
@@ -87,14 +123,12 @@ class Temp {
 
       return $centuryGrid;
     } else {
-      return this._buildList(this.datesObject.dates);
+      return this._buildList(datesObject.dates);
     }
   }
 
-  _buildYearGrid() {
-    if (!this.datesObject) return;
-
-    if (this.datesObject.dates && this.datesObject.dates.length >= 12) {
+  _buildYearGrid(datesObject) {
+    if (datesObject.dates && datesObject.dates.length >= 12) {
       const years = datesObject.indice;
       const monthOfYear = Array.apply(null, { length: 12 }).map(
         Number.call,
@@ -103,7 +137,7 @@ class Temp {
 
       const $yearGrid = createElement({
         className: "grid",
-        innerHtml:
+        innerHTML:
           "" +
           '<div class="gridHeading"> Select a year</div>' +
           '<div class="gridBody"></div>',
@@ -113,8 +147,8 @@ class Temp {
 
       years.forEach((y) => {
         const $yearItem = createElement({
-          tagName: "gridRow",
-          innerHtml:
+          className: "gridRow",
+          innerHTML:
             "" +
             `<span class="gridLabel">${y}</span>` +
             `<span class="gridRowInner12"></span>`,
@@ -140,32 +174,29 @@ class Temp {
 
       return $yearGrid;
     } else {
-      return this._buildList(this.datesObject.dates);
+      return this._buildList(datesObject.dates);
     }
   }
 
-  _buildMonthGrid() {
-    if (!this.datesObject) return;
-
+  _buildMonthGrid(datesObject) {
     const year = this.state.year;
 
-    if (
-      this.datesObject[year].dates &&
-      this.datesObject[year].dates.length > 12
-    ) {
+    if (datesObject[year].dates && datesObject[year].dates.length > 12) {
       const $monthGrid = createElement({
         className: "grid",
-        innerHtml:
+        innerHTML:
           "" +
           '<div class="gridHeading"></div>' +
           '<div class="gridBody"></div>',
       });
 
+      const $monthGridBody = getEl(".gridBody", $monthGrid);
+
       // add back btn
       const $backBtn = createElement({
         tagName: "button",
         className: "backbtn",
-        innerHtml: this.state.year,
+        innerHTML: this.state.year,
       });
 
       $backBtn.addEventListener("click", () => {
@@ -183,16 +214,16 @@ class Temp {
       monthNames.forEach((m, i) => {
         const $mItem = createElement({
           className: classNames("gridRow", {
-            inactiveGridRow: !defined(this.datesObject[year][i]),
+            inactiveGridRow: !defined(datesObject[year][i]),
           }),
-          innerHtml:
+          innerHTML:
             "" +
             `<span class="gridLabel">${m}</span>` +
             '<span class="gridRowInner31"></span>',
         });
 
         $mItem.addEventListener("click", () => {
-          if (defined(this.datesObject[year][i])) {
+          if (defined(datesObject[year][i])) {
             this._setState({ month: i, day: null, time: null });
           }
         });
@@ -203,30 +234,30 @@ class Temp {
             tagName: "span",
             className: classNames({
               activeGrid:
-                defined(this.datesObject[year][i]) &&
-                defined(this.datesObject[year][i][d + 1]),
+                defined(datesObject[year][i]) &&
+                defined(datesObject[year][i][d + 1]),
             }),
           });
           $monthInner.appendChild($dItem);
         });
 
-        return $monthGrid;
+        $monthGridBody.appendChild($mItem);
       });
+
+      return $monthGrid;
     } else {
-      return this._buildList(this.datesObject[year].dates);
+      return this._buildList(datesObject[year].dates);
     }
   }
 
-  _buildDayView() {
-    if (!this.datesObject) return;
-
+  _buildDayView(datesObject) {
     if (
-      this.datesObject[this.state.year][this.state.month].dates &&
-      this.datesObject[this.state.year][this.state.month].dates.length > 31
+      datesObject[this.state.year][this.state.month].dates &&
+      datesObject[this.state.year][this.state.month].dates.length > 31
     ) {
       const $dayView = createElement({
         className: "dayPicker",
-        innerHtml: "" + '<div class="daypicker-wrapper"></div>',
+        innerHTML: "" + '<div class="daypicker-wrapper"></div>',
       });
 
       const $dayViewWrapper = getEl(".daypicker-wrapper", $dayView);
@@ -234,7 +265,7 @@ class Temp {
       const $yearBackBtn = createElement({
         tagName: "button",
         className: "backbtn",
-        innerHtml: this.state.year,
+        innerHTML: this.state.year,
       });
 
       $yearBackBtn.addEventListener("click", () => {
@@ -244,7 +275,7 @@ class Temp {
       const $monthBackBtn = createElement({
         tagName: "button",
         className: "backbtn",
-        innerHtml: monthNames[this.state.month],
+        innerHTML: monthNames[this.state.month],
       });
 
       $monthBackBtn.addEventListener("click", () => {
@@ -254,23 +285,22 @@ class Temp {
       $dayViewWrapper.appendChild($yearBackBtn);
       $dayViewWrapper.appendChild($monthBackBtn);
 
-      this.dateSelector = new DateSelector(this.$dayView, {
-        inline: true,
+      this.dateSelector = new CalendarSelector($dayView, {
         includeDates: this.includeDates,
+        onSelect: (date) => {
+          this._setState({ day: date.getDate() });
+        },
       });
-
       return this.dateSelector.$el;
     } else {
       return this._buildList(
-        this.datesObject[this.state.year][this.state.month].dates
+        datesObject[this.state.year][this.state.month].dates
       );
     }
   }
 
-  _buildHourView() {
-    if (!this.datesObject) return;
-
-    const timeOptions = this.datesObject[this.state.year][this.state.month][
+  _buildHourView(datesObject) {
+    const timeOptions = datesObject[this.state.year][this.state.month][
       this.state.day
     ].dates.map((m) => ({
       value: m,
@@ -284,7 +314,7 @@ class Temp {
 
       const $hourView = createElement({
         className: "grid",
-        innerHtml:
+        innerHTML:
           "" +
           `<div class="gridHeading">Select an hour on ${headingSuffix}</div>` +
           "<div class='gridBody'></div>",
@@ -292,18 +322,18 @@ class Temp {
 
       const $gridBody = getEl(".gridBody", $hourView);
 
-      this.datesObject[this.state.year][this.state.month][
+      datesObject[this.state.year][this.state.month][
         this.state.day
       ].indice.forEach((h) => {
         const optionsPrefix = `${
-          this.datesObject[this.state.year][this.state.month][this.state.day][h]
+          datesObject[this.state.year][this.state.month][this.state.day][h]
             .length
         }`;
 
         const $hourItem = createElement({
           tagName: "button",
           className: "dateBtn",
-          innerHtml:
+          innerHTML:
             "" +
             `<span>${h} : 00 - ${h + 1} : 00 </span> ` +
             `<span>(${optionsPrefix} options)</span>`,
@@ -319,17 +349,14 @@ class Temp {
       return $hourView;
     } else {
       return this._buildList(
-        this.datesObject[this.state.year][this.state.month][this.state.day]
-          .dates
+        datesObject[this.state.year][this.state.month][this.state.day].dates
       );
     }
   }
 
-  _buildMinutesView() {
-    if (!this.datesObject) return;
-
+  _buildMinutesView(datesObject) {
     const options =
-      this.datesObject[this.state.year][this.state.month][this.state.day][
+      datesObject[this.state.year][this.state.month][this.state.day][
         this.state.hour
       ];
 
@@ -337,11 +364,9 @@ class Temp {
   }
 
   _buildList(items) {
-    if (!items) return;
-
     const $list = createElement({
       className: "grid",
-      innerHtml:
+      innerHTML:
         "" +
         '<div class="gridHeading">Select a time</div>' +
         '<div class="gridBody"></div>',
@@ -353,7 +378,7 @@ class Temp {
       const $item = createElement({
         tagName: "button",
         className: "dateBtn",
-        innerHtml: defined(this.opts.dateFormat)
+        innerHTML: defined(this.opts.dateFormat)
           ? dFormatter(
               item,
               this.opts.dateFormat.currentTime,
@@ -363,7 +388,7 @@ class Temp {
       });
 
       $item.addEventListener("click", () => {
-        this.closePicker(item);
+        this.dts.portal.hide(item);
 
         if (this.opts.onChange) {
           this.opts.onChange(item);
@@ -440,4 +465,64 @@ class Temp {
       });
     }
   };
+
+  destroy() {
+    this.$el.innerHTML = "";
+  }
+
+  _buildBackBtn() {
+    const disabled = !this.state[this.state.granularity];
+
+    const $backBtn = createElement({
+      tagName: "button",
+      className: "backbutton",
+      innerHTML: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',
+      attrs: { ...(disabled && { disabled: true }) },
+    });
+
+    $backBtn.addEventListener("click", this.goBack);
+
+    return $backBtn;
+  }
+
+  render() {
+    this.destroy();
+
+    const { datesObject } = this;
+    const { century, year, month, day, hour } = this.state;
+
+    this.$el.appendChild(this._buildBackBtn());
+
+    if (!defined(century)) {
+      this.$el.appendChild(this._buildCenturyGrid(datesObject));
+      return;
+    }
+
+    if (defined(century) && !defined(year)) {
+      this.$el.appendChild(this._buildYearGrid(datesObject[century]));
+      return;
+    }
+
+    if (defined(year) && !defined(month)) {
+      this.$el.appendChild(this._buildMonthGrid(datesObject[century]));
+      return;
+    }
+
+    if (defined(year) && defined(month) && !defined(day)) {
+      this.$el.appendChild(this._buildDayView(datesObject[century]));
+      return;
+    }
+
+    if (defined(year) && defined(month) && defined(day) && !defined(hour)) {
+      this.$el.appendChild(this._buildHourView(datesObject[century]));
+      return;
+    }
+
+    if (defined(year) && defined(month) && defined(day) && defined(hour)) {
+      this.$el.appendChild(this._buildMinutesView(datesObject[century]));
+      return;
+    }
+
+    return;
+  }
 }

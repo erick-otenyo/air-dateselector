@@ -1,23 +1,22 @@
-import consts from "./consts";
 import {
   addEventListener,
   classNames,
   closest,
   createElement,
-  getDaysCount,
   getEl,
-  getParsedDate,
-  isSameDate,
-  subDays,
-} from "../../utils";
+} from "dom-utils";
 
-import DateselectorCell from "./dateselectorCell";
+import { getDaysCount, getParsedDate, isSameDate, subDays } from "date-utils";
 
-import "./dateselectorBody.scss";
+import consts from "consts";
 
-const cellClassName = ".air-dateselector-cell";
+import CalendarCell from "../calendar-selector-cell";
 
-export default class DateselectorBody {
+import "./style.scss";
+
+const cellClassName = ".air-cal-cell";
+
+export default class CalendarBody {
   constructor({ ds, opts }) {
     this.ds = ds;
     this.opts = opts;
@@ -51,15 +50,15 @@ export default class DateselectorBody {
 
   _buildBaseHtml() {
     this.$el = createElement({
-      className: `air-dateselector-body -days-`,
-      innerHtml:
+      className: `air-cal-body -days-`,
+      innerHTML:
         "" +
-        '<div class="air-dateselector-body--day-names"></div>' +
-        `<div class="air-dateselector-body--cells -days-"></div>`,
+        '<div class="air-cal-body--day-names"></div>' +
+        `<div class="air-cal-body--cells -days-"></div>`,
     });
 
-    this.$names = getEl(".air-dateselector-body--day-names", this.$el);
-    this.$cells = getEl(".air-dateselector-body--cells", this.$el);
+    this.$names = getEl(".air-cal-body--day-names", this.$el);
+    this.$cells = getEl(".air-cal-body--cells", this.$el);
   }
 
   _getDayNamesHtml(firstDay = this.ds.locale.firstDay) {
@@ -72,7 +71,7 @@ export default class DateselectorBody {
 
     while (i < totalDays) {
       let day = curDay % totalDays;
-      let className = classNames("air-dateselector-body--day-name", {
+      let className = classNames("air-cal-body--day-name", {
         [consts.cssClassWeekend]: isWeekend(day),
         "-clickable-": !!onClickDayName,
       });
@@ -92,7 +91,7 @@ export default class DateselectorBody {
 
   _generateCell(date) {
     let { ds, opts } = this;
-    return new DateselectorCell({
+    return new CalendarCell({
       ds,
       opts,
       date,
@@ -101,7 +100,7 @@ export default class DateselectorBody {
   }
 
   _generateCells() {
-    DateselectorBody.getDaysDates(this.ds, (date) => {
+    CalendarBody.getDaysDates(this.ds, (date) => {
       this.cells.push(this._generateCell(date));
     });
   }
@@ -161,7 +160,7 @@ export default class DateselectorBody {
       this.handleClick(e);
     }
 
-    if (onClickDayName && target.closest(".air-dateselector-body--day-name")) {
+    if (onClickDayName && target.closest(".air-cal-body--day-name")) {
       this.handleDayNameClick(e);
     }
   };

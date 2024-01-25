@@ -2,7 +2,7 @@
     Dateselector body
    ------------------------------------------------- */
 
-.air-dateselector-body {
+.air-cal-body {
   transition: all var(--adts-transition-duration) var(--adts-transition-ease);
 
   &.-hidden- {
@@ -13,13 +13,13 @@
 /*  Day names
    ------------------------------------------------- */
 
-.air-dateselector-body--day-names {
+.air-cal-body--day-names {
   display: grid;
   grid-template-columns: repeat(7, var(--adts-day-cell-width));
   margin: 8px 0 3px;
 }
 
-.air-dateselector-body--day-name {
+.air-cal-body--day-name {
   color: var(--adts-day-name-color);
   display: flex;
   align-items: center;
@@ -41,7 +41,7 @@
 /*  Cells container
    ------------------------------------------------- */
 
-.air-dateselector-body--cells {
+.air-cal-body--cells {
   display: grid;
   &.-days- {
     grid-template-columns: repeat(7, var(--adts-day-cell-width));

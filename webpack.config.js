@@ -2,6 +2,8 @@ const webpack = require("webpack");
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const BundleAnalyzerPlugin =
+  require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const NAME = "air-dateselector";
 
@@ -25,6 +27,7 @@ module.exports = function (env, argv) {
     new MiniCssExtractPlugin({
       filename: `${NAME}.css`,
     }),
+    new BundleAnalyzerPlugin(),
   ];
 
   let entry = {

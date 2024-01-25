@@ -1,4 +1,5 @@
-import { getEl, createElement, getParsedDate, closest } from "utils";
+import { getEl, createElement, closest } from "dom-utils";
+import { getParsedDate } from "date-utils";
 
 import "./style.scss";
 

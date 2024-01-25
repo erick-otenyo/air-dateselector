@@ -7,16 +7,10 @@
   border: 1px solid var(--adts-border-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-radius: var(--adts-border-radius);
-  box-sizing: content-box;
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(4, max-content);
-  grid-template-areas: var(--adts-grid-areas);
   font-family: var(--adts-font-family), sans-serif;
   font-size: var(--adts-font-size);
   color: var(--adts-color);
-  width: var(--adts-width);
-  height: var(--adts-portal-height);
+  overflow: scroll;
   position: absolute;
   transition: opacity var(--adts-transition-duration)
       var(--adts-transition-ease),
@@ -56,10 +50,4 @@
   position: absolute;
   left: 0;
   top: 0;
-}
-
-.air-dts--content {
-  box-sizing: content-box;
-  padding: var(--adts-padding);
-  grid-area: body;
 }

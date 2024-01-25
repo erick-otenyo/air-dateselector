@@ -1,10 +1,11 @@
-import { getEl, createElement } from "utils";
+import { getEl, createElement } from "dom-utils";
+import { createDate } from "date-utils";
 
 import DateTimeSelectorNav from "./datetime-selector-nav";
 import DateTimeSelectorPortal from "./datetime-selector-portal";
 
-import "./dateTimeSelectorVars.scss";
-import "./dateTimeSelector.scss";
+import "./variables.scss";
+import "./style.scss";
 
 export default class DateTimeSelector {
   constructor(el, opts) {
@@ -16,6 +17,12 @@ export default class DateTimeSelector {
     this.$el.appendChild(this.$nav);
 
     this.opts = opts;
+
+    if (this.opts.includeDates) {
+      this.opts.includeDates = this.opts.includeDates.map((date) =>
+        createDate(date)
+      );
+    }
 
     this.init();
   }

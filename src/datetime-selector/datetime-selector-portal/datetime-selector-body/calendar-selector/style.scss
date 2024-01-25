@@ -1,0 +1,27 @@
+/* -------------------------------------------------
+    Dateselector
+   ------------------------------------------------- */
+
+.air-cal {
+  background: var(--adts-background-color);
+  box-sizing: content-box;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(4, max-content);
+  grid-template-areas: var(--adts-grid-areas);
+  font-family: var(--adts-font-family), sans-serif;
+  font-size: var(--adts-font-size);
+  color: var(--adts-color);
+  width: 100%;
+  position: static;
+}
+
+.air-cal--navigation {
+  grid-area: nav;
+}
+
+.air-cal--content {
+  box-sizing: content-box;
+  padding: var(--adts-padding);
+  grid-area: body;
+}

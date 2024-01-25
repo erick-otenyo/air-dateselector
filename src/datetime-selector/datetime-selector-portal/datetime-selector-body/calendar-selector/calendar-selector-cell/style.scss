@@ -4,7 +4,7 @@
     Dateselector cell
    ------------------------------------------------- */
 
-.air-dateselector-cell {
+.air-cal-cell {
   border-radius: var(--adts-cell-border-radius);
   box-sizing: border-box;
   cursor: pointer;
@@ -60,7 +60,7 @@
 /*  Day cell
    ------------------------------------------------- */
 
-.air-dateselector-cell.-day- {
+.air-cal-cell.-day- {
   &.-other-month- {
     @extend %otherMonth;
   }

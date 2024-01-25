@@ -1,22 +1,13 @@
-import localeEn from "./locale/en";
-import consts from "./consts";
+import localeEn from "locale/en";
 
 export default {
   classes: "",
-  inline: false,
   locale: localeEn,
   startDate: new Date(),
   firstDay: "",
   weekends: [6, 0],
   dateFormat: "",
-  keyboardNav: true,
   selectedDate: false,
-  container: "",
-  isMobile: false,
-  visible: false,
-
-  position: "bottom left",
-  offset: 12,
 
   showOtherMonths: true,
   selectOtherMonths: true,
@@ -27,9 +18,6 @@ export default {
   moveToOtherYearsOnSelect: true,
 
   monthsField: "monthsShort",
-
-  showEvent: "focus",
-  autoClose: true,
 
   // navigation
   prevHtml: '<svg><path d="M 17,12 l -5,5 l 5,5"></path></svg>',

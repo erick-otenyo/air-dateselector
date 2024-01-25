@@ -1,15 +1,12 @@
-import {
-  closest,
-  createElement,
-  getEl,
-  getParsedDate,
-  removeClass,
-} from "../utils";
+import { closest, createElement, getEl, removeClass } from "dom-utils";
 
-import "./dateselectorNav.scss";
-import consts from "./consts";
+import { getParsedDate } from "date-utils";
 
-export default class DateselectorNav {
+import consts from "consts";
+
+import "./style.scss";
+
+export default class CalendarNav {
   constructor({ ds, opts }) {
     this.ds = ds;
     this.opts = opts;
@@ -30,7 +27,7 @@ export default class DateselectorNav {
   }
 
   _defineDOM() {
-    this.$title = getEl(".air-dateselector-nav--title", this.$el);
+    this.$title = getEl(".air-cal-nav--title", this.$el);
     this.$prev = getEl('[data-action="prev"]', this.$el);
     this.$next = getEl('[data-action="next"]', this.$el);
   }
@@ -59,7 +56,7 @@ export default class DateselectorNav {
   _createElement() {
     this.$el = createElement({
       tagName: "nav",
-      className: "air-dateselector-nav",
+      className: "air-cal-nav",
     });
   }
 
@@ -99,13 +96,13 @@ export default class DateselectorNav {
 
   _resetNavStatus() {
     removeClass(
-      this.$el.querySelectorAll(".air-dateselector-nav--action"),
+      this.$el.querySelectorAll(".air-cal-nav--action"),
       "-disabled-"
     );
   }
 
   onClickNav = (e) => {
-    let $item = closest(e.target, ".air-dateselector-nav--action");
+    let $item = closest(e.target, ".air-cal-nav--action");
     if (!$item) return;
 
     let actionName = $item.dataset.action;
@@ -124,9 +121,9 @@ export default class DateselectorNav {
 
     this.$el.innerHTML =
       "" +
-      `<div class="air-dateselector-nav--action" data-action="prev">${prevHtml}</div>` +
-      '<div class="air-dateselector-nav--title"></div>' +
-      `<div class="air-dateselector-nav--action" data-action="next">${nextHtml}</div>`;
+      `<div class="air-cal-nav--action" data-action="prev">${prevHtml}</div>` +
+      '<div class="air-cal-nav--title"></div>' +
+      `<div class="air-cal-nav--action" data-action="next">${nextHtml}</div>`;
   }
 
   get isNavIsFunction() {
