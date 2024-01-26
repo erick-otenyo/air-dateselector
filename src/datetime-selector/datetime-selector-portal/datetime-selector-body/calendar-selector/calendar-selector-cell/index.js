@@ -7,9 +7,11 @@ import consts from "consts";
 import "./style.scss";
 
 export default class CalendarCell {
-  constructor({ date, ds, opts, body } = {}) {
-    this.date = date;
+  constructor(dts, ds, { date, opts, body } = {}) {
+    this.dts = dts;
     this.ds = ds;
+    this.date = date;
+
     this.opts = opts;
     this.body = body;
     this.customData = false;
@@ -19,12 +21,12 @@ export default class CalendarCell {
 
   init() {
     // If includeDates option is set, then we should disable all dates except ones that are included
-    if (!this.ds.includeDates) {
+    if (!this.dts.includeDates) {
       this.customData = {
         disabled: true,
       };
     } else {
-      let includeDate = this.ds.includeDates.find((date) =>
+      let includeDate = this.dts.includeDates.find((date) =>
         isSameDate(date, this.date)
       );
 
@@ -69,14 +71,12 @@ export default class CalendarCell {
   }
 
   _getClassName() {
-    let currentDate = new Date();
     let { selectOtherMonths } = this.opts;
     let { minDate, maxDate } = this.ds;
     let { day } = getParsedDate(this.date);
     let disabled = this.customData?.disabled;
 
     let classNameCommon = classNames("air-cal-cell", "-day-", {
-      "-current-": isSameDate(currentDate, this.date),
       "-min-date-": minDate && isSameDate(minDate, this.date),
       "-max-date-": maxDate && isSameDate(maxDate, this.date),
     });

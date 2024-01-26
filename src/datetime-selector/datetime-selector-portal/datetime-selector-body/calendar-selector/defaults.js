@@ -3,7 +3,6 @@ import localeEn from "locale/en";
 export default {
   classes: "",
   locale: localeEn,
-  startDate: new Date(),
   firstDay: "",
   weekends: [6, 0],
   dateFormat: "",

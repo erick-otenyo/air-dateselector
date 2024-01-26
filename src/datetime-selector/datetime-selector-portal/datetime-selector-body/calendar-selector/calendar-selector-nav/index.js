@@ -1,13 +1,14 @@
 import { closest, createElement, getEl, removeClass } from "dom-utils";
 
-import { getParsedDate } from "date-utils";
+import { getParsedDate, dateFormat } from "date-utils";
 
 import consts from "consts";
 
 import "./style.scss";
 
 export default class CalendarNav {
-  constructor({ ds, opts }) {
+  constructor(dts, ds, opts) {
+    this.dts = dts;
     this.ds = ds;
     this.opts = opts;
 
@@ -61,18 +62,14 @@ export default class CalendarNav {
   }
 
   _getTitle() {
-    let { ds, opts } = this;
+    let { dts, ds, opts } = this;
     let template = opts.navTitles.days;
 
-    if (typeof template === "function") {
-      return template(ds);
-    }
-
-    return ds.formatDate(ds.viewDate, template);
+    return dateFormat(ds.viewDate, template);
   }
 
   handleNavStatus() {
-    let { minDate, maxDate } = this.ds;
+    let { minDate, maxDate } = this.dts;
     if (!(minDate || maxDate)) return;
 
     let { year, month } = this.ds.parsedViewDate;

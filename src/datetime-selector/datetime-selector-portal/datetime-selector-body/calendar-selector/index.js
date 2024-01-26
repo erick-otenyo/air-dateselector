@@ -8,7 +8,6 @@ import {
   isDateBigger,
   isDateSmaller,
   isSameDate,
-  dateFormat,
 } from "date-utils";
 
 import { deepCopy, deepMerge } from "utils";
@@ -16,71 +15,62 @@ import { deepCopy, deepMerge } from "utils";
 import withEvents from "withEvents";
 import consts from "consts";
 
-import DateselectorBody from "./calendar-selector-body";
-import DateselectorNav from "./calendar-selector-nav";
+import CalendarSelectorBody from "./calendar-selector-body";
+import CalendarSelectorNav from "./calendar-selector-nav";
 
 import "./style.scss";
 
 let $dateselectorsContainer = "",
-  $dateselectorOverlay = "",
   baseTemplate =
     "" +
     '<div class="air-cal--navigation"></div>' +
     '<div class="air-cal--content"></div>';
 
-export default class Dateselector {
+export default class CalendarSelector {
   static defaults = defaults;
 
-  constructor(el, opts) {
+  constructor(el, dts, opts) {
     this.$el = getEl(el);
+    this.dts = dts;
 
     if (!this.$el) return;
 
     this.$dateselector = createElement({ className: "air-cal" });
     this.opts = deepMerge({}, defaults, opts);
 
-    let { startDate } = this.opts;
-
-    if (!startDate) {
-      this.opts.startDate = new Date();
-    }
-
     this.inited = false;
 
-    this.viewDate = createDate(this.opts.startDate);
+    if (this.dts.portalStateDate) {
+      this.viewDate = createDate(this.dts.portalStateDate);
+    } else {
+      this.viewDate = createDate(this.dts.maxDate);
+    }
+
     this.focusDate = false;
-    this.selectedDate = null;
     this.calendarView = null;
 
     this.init();
   }
 
   init() {
-    let {
-      opts: { selectedDate },
-    } = this;
-
     this._handleLocale();
     this._bindSubEvents();
 
-    this._createIncludeDates();
     this._limitViewDateByMaxMinDates();
 
     this._bindEvents();
-
-    if (selectedDate) {
-      this.selectDate(selectedDate, { silent: true });
-    }
 
     this._createComponents();
   }
 
   _createComponents() {
     let {
+      dts,
       opts,
       opts: { classes },
     } = this;
-    let ds = this;
+
+    let cs = this;
 
     this._buildBaseHtml();
 
@@ -90,9 +80,9 @@ export default class Dateselector {
       this.$dateselector.classList.add(...classes.split(" "));
     }
 
-    this.calendarView = new DateselectorBody({ ds, opts });
+    this.calendarView = new CalendarSelectorBody(dts, cs, opts);
 
-    this.nav = new DateselectorNav({ ds, opts });
+    this.nav = new CalendarSelectorNav(dts, cs, opts);
 
     this.$content.appendChild(this.calendarView.$el);
     this.$nav.appendChild(this.nav.$el);
@@ -104,25 +94,11 @@ export default class Dateselector {
     this.nav.destroy();
   }
 
-  _createIncludeDates() {
-    let { includeDates } = this.opts;
+  _createMinMaxDates() {
+    let { minDate, maxDate } = this.dts;
 
-    if (!includeDates || !includeDates.length) return;
-
-    this.includeDates = includeDates.map((date) => {
-      return createDate(date);
-    });
-
-    // sort dates
-    this.includeDates.sort((a, b) => {
-      return a - b;
-    });
-
-    //min date
-    this.minDate = this.includeDates[0];
-
-    //max date
-    this.maxDate = this.includeDates[this.includeDates.length - 1];
+    this.minDate = minDate ? createDate(minDate) : false;
+    this.maxDate = maxDate ? createDate(maxDate) : false;
   }
 
   _limitViewDateByMaxMinDates() {
@@ -150,17 +126,9 @@ export default class Dateselector {
   }
 
   _handleLocale() {
-    let { locale, dateFormat, firstDay, timeFormat } = this.opts;
-    this.locale = deepCopy(locale);
+    let { locale, firstDay } = this.opts;
 
-    if (dateFormat) {
-      this.locale.dateFormat = dateFormat;
-    }
-    // Allow to remove time from formatted string
-    // e.g. if user wants to display mm:hh yyyy MMMM (time first) instead of hardcoded order - 'date time`
-    if (timeFormat !== undefined && timeFormat !== "") {
-      this.locale.timeFormat = timeFormat;
-    }
+    this.locale = deepCopy(locale);
 
     if (firstDay !== "") {
       this.locale.firstDay = firstDay;
@@ -172,12 +140,6 @@ export default class Dateselector {
     this.$dateselector.addEventListener("mousedown", this._onMouseDown);
     this.$dateselector.addEventListener("mouseup", this._onMouseUp);
     window.addEventListener("resize", this._onResize);
-  }
-
-  formatDate(date = this.viewDate, string) {
-    date = createDate(date);
-
-    return dateFormat(date, string, this.locale);
   }
 
   /**
@@ -212,33 +174,13 @@ export default class Dateselector {
    * @param {boolean} [params.updateTime] - should update timepicker's time from passed date
    * @param {boolean} [params.silent] - if true, then onChange event wont be triggered
    * @return {Promise<unknown>} - returns promise, since input value updates asynchronously, after promise resolves, we need a promise tobe able to get current input value
-   * @example selectDate(new Date()).then(() => {console.log(ds.$el.value)})
    */
   selectDate(date, params = {}) {
-    let { parsedViewDate } = this;
-    let { updateTime } = params;
-    let {
-      moveToOtherMonthsOnSelect,
-
-      autoClose,
-      onBeforeSelect,
-    } = this.opts;
-
     let newViewDate;
 
     date = createDate(date);
 
     if (!(date instanceof Date)) return;
-
-    if (onBeforeSelect && !onBeforeSelect({ date, dateselector: this })) {
-      return Promise.resolve();
-    }
-
-    // Checks if selected date is out of current month or decade
-    // If so, change `viewDate`
-    if (date.getMonth() !== parsedViewDate.month && moveToOtherMonthsOnSelect) {
-      newViewDate = new Date(date.getFullYear(), date.getMonth(), 1);
-    }
 
     if (newViewDate) {
       this.setViewDate(newViewDate);
@@ -250,10 +192,7 @@ export default class Dateselector {
       action: consts.actionSelectDate,
       silent: params?.silent,
       date,
-      updateTime,
     });
-
-    this._updateLastSelectedDate(date);
 
     return new Promise((resolve) => {
       setTimeout(resolve);
@@ -285,18 +224,6 @@ export default class Dateselector {
   hide() {
     this.$dateselector.classList.remove("-active-");
   }
-
-  _getInputValue = (dateFormat) => {
-    let { selectedDate } = this;
-
-    if (!selectedDate) return "";
-
-    let formatIsFunction = typeof dateFormat === "function";
-
-    let value = formatIsFunction ? dateFormat(selectedDate) : selectedDate;
-
-    return value;
-  };
 
   _triggerOnSelect() {
     let { onSelect } = this.opts;
@@ -348,16 +275,6 @@ export default class Dateselector {
     if (isSameDate(date, this.viewDate)) return;
     let oldViewDate = this.viewDate;
     this.viewDate = date;
-    let { onChangeViewDate } = this.opts;
-
-    if (onChangeViewDate) {
-      let { month, year } = this.parsedViewDate;
-      onChangeViewDate({
-        month,
-        year,
-        decade: this.curDecade,
-      });
-    }
 
     this.trigger(consts.eventChangeViewDate, date, oldViewDate);
   };
@@ -378,15 +295,6 @@ export default class Dateselector {
     this.focusDate = date;
 
     this.trigger(consts.eventChangeFocusDate, date, params);
-  };
-
-  /**
-   * Updates lastSelectedDate param and triggers corresponding event
-   * @param {Date|Boolean} date - date or empty
-   */
-  _updateLastSelectedDate = (date) => {
-    this.lastSelectedDate = date;
-    this.trigger(consts.eventChangeLastSelectedDate, date);
   };
 
   /**
@@ -455,23 +363,6 @@ export default class Dateselector {
     this.calendarView.renderDayNames();
   };
 
-  _showMobileOverlay() {
-    $dateselectorOverlay.classList.add("-active-");
-  }
-
-  _hasTransition() {
-    let transition = window
-      .getComputedStyle(this.$dateselector)
-      .getPropertyValue("transition-duration");
-    let props = transition.split(", ");
-
-    return (
-      props.reduce((sum, item) => {
-        return parseFloat(item) + sum;
-      }, 0) > 0
-    );
-  }
-
   //  Utils
   // -------------------------------------------------
 
@@ -509,7 +400,7 @@ export default class Dateselector {
    * @returns {*}
    */
   getViewDates = () => {
-    return DateselectorBody.getDaysDates(this);
+    return CalendarSelectorBody.getDaysDates(this);
   };
 
   //  Helpers
@@ -557,4 +448,4 @@ export default class Dateselector {
   };
 }
 
-withEvents(Dateselector.prototype);
+withEvents(CalendarSelector.prototype);

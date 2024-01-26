@@ -15,7 +15,7 @@ export default class DateTimeSelectorPortal {
     $dtsPortalContainer = createElement({ className: id, id });
     getEl("body").appendChild($dtsPortalContainer);
   }
-  constructor({ dts, opts }) {
+  constructor(dts, opts) {
     this.dts = dts;
     this.opts = opts;
 
@@ -24,6 +24,7 @@ export default class DateTimeSelectorPortal {
     this.inited = false;
     this.visible = false;
     this.inFocus = false;
+    this.opened = false;
 
     this.init();
   }
@@ -85,6 +86,7 @@ export default class DateTimeSelectorPortal {
 
     this.$portal.classList.add("-active-");
     this.visible = true;
+    this.opened = true;
   }
 
   hide() {
@@ -208,7 +210,7 @@ export default class DateTimeSelectorPortal {
 
     this._setPositionClasses();
 
-    this.body = new DateTimeSelectorBody({ dts, opts });
+    this.body = new DateTimeSelectorBody(dts, opts);
 
     this.$portal.appendChild(this.body.$el);
   }

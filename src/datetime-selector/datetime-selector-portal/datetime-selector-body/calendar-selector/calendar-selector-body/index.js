@@ -17,7 +17,8 @@ import "./style.scss";
 const cellClassName = ".air-cal-cell";
 
 export default class CalendarBody {
-  constructor({ ds, opts }) {
+  constructor(dts, ds, opts) {
+    this.dts = dts;
     this.ds = ds;
     this.opts = opts;
     this.cells = [];
@@ -91,8 +92,8 @@ export default class CalendarBody {
 
   _generateCell(date) {
     let { ds, opts } = this;
-    return new CalendarCell({
-      ds,
+
+    return new CalendarCell(this.dts, this.ds, {
       opts,
       date,
       body: this,

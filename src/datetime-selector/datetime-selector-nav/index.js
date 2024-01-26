@@ -1,10 +1,10 @@
-import { getEl, createElement, closest } from "dom-utils";
+import { getEl, createElement, closest, removeClass } from "dom-utils";
 import { getParsedDate } from "date-utils";
 
 import "./style.scss";
 
 export default class DateTimeSelectorNav {
-  constructor({ dts, opts }) {
+  constructor(dts, opts) {
     this.dts = dts;
     this.opts = opts;
 
@@ -59,10 +59,8 @@ export default class DateTimeSelectorNav {
   };
 
   _getTitle() {
-    let { dts, opts } = this;
-    let template = opts.dateFormat;
-
-    return dts.formatDate(dts.selectedDate, template);
+    let { dts } = this;
+    return dts.formatDate();
   }
 
   _disableNav(actionName) {
@@ -91,22 +89,32 @@ export default class DateTimeSelectorNav {
     this.dts.toggleSelector();
   };
 
+  _resetNavStatus() {
+    removeClass(
+      this.$el.querySelectorAll(".air-dts-nav--action"),
+      "-disabled-"
+    );
+  }
+
   handleNavStatus() {
-    let { minDate, maxDate, parsedSelectedDate } = this.dts;
+    let { minDate, maxDate, selectedDate } = this.dts;
 
-    let minDateParsed = minDate ? getParsedDate(minDate) : false;
-    let maxDateParsed = maxDate ? getParsedDate(maxDate) : false;
-
-    if (minDate && minDateParsed >= parsedSelectedDate) {
+    if (minDate >= selectedDate) {
       this._disableNav("prevTime");
     }
-    if (maxDate && maxDateParsed <= parsedSelectedDate) {
+    if (maxDate <= selectedDate) {
       this._disableNav("nextTime");
     }
   }
 
   renderDelay = () => {
     setTimeout(this.render);
+  };
+
+  update = () => {
+    this._resetNavStatus();
+    this.render();
+    this.handleNavStatus();
   };
 
   render = () => {

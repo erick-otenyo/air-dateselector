@@ -33,10 +33,9 @@ export function deepMerge(target, ...objects) {
     .filter((o) => o)
     .forEach((obj) => {
       for (let [key, value] of Object.entries(obj)) {
-        let arrayOrObject =
-          value !== undefined
-            ? value.toString() === ("[object Object]" || "[object Array]")
-            : false;
+        let arrayOrObject = defined(value)
+          ? value.toString() === ("[object Object]" || "[object Array]")
+          : false;
 
         if (arrayOrObject) {
           let targetType =

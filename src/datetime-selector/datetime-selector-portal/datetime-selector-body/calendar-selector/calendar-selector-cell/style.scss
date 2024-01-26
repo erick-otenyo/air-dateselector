@@ -18,14 +18,6 @@
     background: var(--adts-cell-background-color-hover);
   }
 
-  &.-current- {
-    color: var(--adts-color-current-date);
-
-    &.-focus- {
-      color: var(--adts-color);
-    }
-  }
-
   &.-disabled- {
     cursor: default;
     color: var(--adts-color-disabled);
@@ -33,23 +25,12 @@
     &.-focus- {
       color: var(--adts-color-disabled);
     }
-
-    &.-current- {
-      &.-focus- {
-        color: var(--adts-color-disabled);
-      }
-    }
   }
 
   &.-selected- {
     color: #fff;
     border: none;
     background: var(--adts-cell-background-color-selected);
-
-    &.-current- {
-      color: #fff;
-      background: var(--adts-cell-background-color-selected);
-    }
 
     &.-focus- {
       background: var(--adts-cell-background-color-selected-hover);

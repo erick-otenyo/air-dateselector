@@ -15,7 +15,7 @@ import CalendarSelector from "./calendar-selector";
 import "./style.scss";
 
 export default class DateTimeSelectorBody {
-  constructor({ dts, opts }) {
+  constructor(dts, opts) {
     this.dts = dts;
     this.opts = opts;
 
@@ -23,8 +23,7 @@ export default class DateTimeSelectorBody {
       className: "air-dts--content",
     });
 
-    this.includeDates = this.opts.includeDates || [];
-    this.datesObject = objectifyDates(this.includeDates);
+    this.datesObject = objectifyDates(this.dts.includeDates);
 
     this.state = {
       century: null,
@@ -44,6 +43,11 @@ export default class DateTimeSelectorBody {
   }
 
   _initState() {
+    if (this.dts.portalState) {
+      this._setState(this.dts.portalState);
+      return;
+    }
+
     let defaultCentury = null;
     let defaultYear = null;
     let defaultMonth = null;
@@ -94,6 +98,8 @@ export default class DateTimeSelectorBody {
 
   _setState(newState) {
     this.state = { ...this.state, ...newState };
+
+    this.dts.portalState = this.state;
 
     this.render();
   }
@@ -285,10 +291,10 @@ export default class DateTimeSelectorBody {
       $dayViewWrapper.appendChild($yearBackBtn);
       $dayViewWrapper.appendChild($monthBackBtn);
 
-      this.dateSelector = new CalendarSelector($dayView, {
-        includeDates: this.includeDates,
+      this.dateSelector = new CalendarSelector($dayView, this.dts, {
+        ...this.opts.calendarOptions,
         onSelect: (date) => {
-          this._setState({ day: date.getDate() });
+          this._setState({ day: date.getDate(), month: date.getMonth() });
         },
       });
       return this.dateSelector.$el;
@@ -309,7 +315,7 @@ export default class DateTimeSelectorBody {
 
     if (timeOptions.length > 24) {
       const headingSuffix = `${this.state.day} ${
-        monthNames[this.state.month + 1]
+        monthNames[this.state.month]
       } ${this.state.year} `;
 
       const $hourView = createElement({
@@ -335,8 +341,8 @@ export default class DateTimeSelectorBody {
           className: "dateBtn",
           innerHTML:
             "" +
-            `<span>${h} : 00 - ${h + 1} : 00 </span> ` +
-            `<span>(${optionsPrefix} options)</span>`,
+            `<span>${h}:00 - ${h + 1}:00 </span> ` +
+            `<span>  (${optionsPrefix} options)</span>`,
         });
 
         $hourItem.addEventListener("click", () => {
@@ -388,11 +394,7 @@ export default class DateTimeSelectorBody {
       });
 
       $item.addEventListener("click", () => {
-        this.dts.portal.hide(item);
-
-        if (this.opts.onChange) {
-          this.opts.onChange(item);
-        }
+        this.dts.updateSelectedDate(item);
       });
 
       $gridBody.appendChild($item);
